@@ -2,7 +2,7 @@
 #include <math.h>
 
 
-Matrix* initMatrix(int rows,int columns)				//³õÊ¼»¯Ò»¸ö¾ØÕó
+Matrix* initMatrix(int rows,int columns)				//åˆå§‹åŒ–ä¸€ä¸ªçŸ©é˜µ
 {
 	Matrix *matrix = NULL;
 	if (rows>0 && columns>0)
@@ -18,7 +18,7 @@ Matrix* initMatrix(int rows,int columns)				//³õÊ¼»¯Ò»¸ö¾ØÕó
 		
 		if (matrix->data == NULL) {
 			fprintf(stderr, "Memory allocation failed\n");
-			free(matrix); // ÊÍ·ÅÒÑ·ÖÅäµÄmatrix½á¹¹ÌåÄÚ´æ
+			free(matrix); // é‡Šæ”¾å·²åˆ†é…çš„matrixç»“æ„ä½“å†…å­˜
 			return NULL;
 		}
 		memset(matrix->data, 0, sizeof(double)*rows*columns);
@@ -28,8 +28,8 @@ Matrix* initMatrix(int rows,int columns)				//³õÊ¼»¯Ò»¸ö¾ØÕó
 		return NULL;
 } 
 
-// ±£Ö¤array´óĞ¡Óëmatrix.row*columnsÒ»ÖÂ
-void assignMatrix(Matrix *matrix,double *array) 		//¸ø¾ØÕó¸³Öµ
+// ä¿è¯arrayå¤§å°ä¸matrix.row*columnsä¸€è‡´
+void assignMatrix(Matrix *matrix,double *array) 		//ç»™çŸ©é˜µèµ‹å€¼
 {
 	if (matrix->data != NULL && array != NULL)
 	{
@@ -45,9 +45,9 @@ int capacityMatrix(Matrix *matrix)
 void freeMatrix(Matrix *matrix)
 {
 	if (matrix != NULL) {
-        //free(matrix->data); // ÊÍ·Å¾ØÕóµÄÊı¾İ´æ´¢Çø
-		SAFE_FREE(matrix->data); // °²È«ÊÍ·Å¾ØÕóµÄÊı¾İ´æ´¢Çø
-        free(matrix); // ÊÍ·Å¾ØÕó½á¹¹Ìå±¾Éí
+        //free(matrix->data); // é‡Šæ”¾çŸ©é˜µçš„æ•°æ®å­˜å‚¨åŒº
+		SAFE_FREE(matrix->data); // å®‰å…¨é‡Šæ”¾çŸ©é˜µçš„æ•°æ®å­˜å‚¨åŒº
+        free(matrix); // é‡Šæ”¾çŸ©é˜µç»“æ„ä½“æœ¬èº«
         printf("ptr released successfully\n");
     }
 }
@@ -58,7 +58,7 @@ void copyMatrix(Matrix *matrix_A, Matrix *matrix_B)
     matrix_B->rows = matrix_A->rows;
     matrix_B->columns = matrix_A->columns;
     if (matrix_B->data != NULL) {
-        SAFE_FREE(matrix_B->data); // ÊÍ·Å¾ÉµÄÄÚ´æ
+        SAFE_FREE(matrix_B->data); // é‡Šæ”¾æ—§çš„å†…å­˜
     }
     matrix_B->data = (double*)malloc(capacityMatrix(matrix_A) * sizeof(double));
     if (matrix_B->data == NULL) {
@@ -68,7 +68,7 @@ void copyMatrix(Matrix *matrix_A, Matrix *matrix_B)
     memcpy(matrix_B->data, matrix_A->data, capacityMatrix(matrix_A) * sizeof(double));
 }
 
-//ÇĞÆ¬Ë÷ÒıÏòÁ¿A[left:right] [left-1, right)
+//åˆ‡ç‰‡ç´¢å¼•å‘é‡A[left:right] [left-1, right)
 /*
 Matrix* indexVector(Matrix *vector_A, int left, int right){
 	Matrix* vector_slice = NULL;
@@ -95,27 +95,27 @@ void printMatrix(Matrix *matrix)
 	}
 }
 
-//´´½¨¶Ô½Ç¾ØÕó
+//åˆ›å»ºå¯¹è§’çŸ©é˜µ
 Matrix* diagMatrix(double* diag_elements, int n) {
-    // ´´½¨Ò»¸ö n x n µÄ¾ØÕó£¬ËùÓĞÔªËØ³õÊ¼»¯ÎªÁã
+    // åˆ›å»ºä¸€ä¸ª n x n çš„çŸ©é˜µï¼Œæ‰€æœ‰å…ƒç´ åˆå§‹åŒ–ä¸ºé›¶
 	int i = 0;
-    Matrix* result = initMatrix(n, n); // Ê¹ÓÃ initMatrix ³õÊ¼»¯¾ØÕó
+    Matrix* result = initMatrix(n, n); // ä½¿ç”¨ initMatrix åˆå§‹åŒ–çŸ©é˜µ
 
     if (result == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
     }
 
-    // ½« diag_elements ÖĞµÄÔªËØÉèÖÃµ½½á¹û¾ØÕóµÄ¶Ô½ÇÏß
+    // å°† diag_elements ä¸­çš„å…ƒç´ è®¾ç½®åˆ°ç»“æœçŸ©é˜µçš„å¯¹è§’çº¿
     for (i = 0; i < n; i++) {
-        result->data[i * n + i] = diag_elements[i];  // ÉèÖÃ¶Ô½ÇÏßÔªËØ
+        result->data[i * n + i] = diag_elements[i];  // è®¾ç½®å¯¹è§’çº¿å…ƒç´ 
     }
 
     return result;
 }
 
 
-//¼Ó·¨
+//åŠ æ³•
 Matrix* addMatrix(Matrix *matrix_A,Matrix *matrix_B)
 {
 	int i =0;
@@ -141,12 +141,12 @@ Matrix* addMatrix(Matrix *matrix_A,Matrix *matrix_B)
 	}
 	else 
 	{
-		printf("¾ØÕóĞÎ×´²»Ò»ÖÂ..\n");
+		printf("çŸ©é˜µå½¢çŠ¶ä¸ä¸€è‡´..\n");
 		return NULL;
 	}
 }
 
-//¼õ·¨
+//å‡æ³•
 Matrix* subMatrix(Matrix *matrix_A,Matrix *matrix_B)
 {
 	int i =0;
@@ -172,12 +172,12 @@ Matrix* subMatrix(Matrix *matrix_A,Matrix *matrix_B)
 	}
 	else 
 	{
-		printf("¾ØÕóĞÎ×´²»Ò»ÖÂ..\n");
+		printf("çŸ©é˜µå½¢çŠ¶ä¸ä¸€è‡´..\n");
 		return NULL;
 	}
 }
  
-//¾ØÕó³Ë·¨
+//çŸ©é˜µä¹˜æ³•
 Matrix* mulMatrix(Matrix *matrix_A,Matrix *matrix_B)
 {
 	int i =0;
@@ -186,7 +186,7 @@ Matrix* mulMatrix(Matrix *matrix_A,Matrix *matrix_B)
 	double sum = 0.0;
 	Matrix *matrix_C = NULL;
 
-	if (matrix_A->columns == matrix_B->rows)		//ÁĞ==ĞĞ
+	if (matrix_A->columns == matrix_B->rows)		//åˆ—==è¡Œ
 	{
 		matrix_C = initMatrix(matrix_A->rows, matrix_B->columns);  
 		if (matrix_C == NULL) {
@@ -209,7 +209,7 @@ Matrix* mulMatrix(Matrix *matrix_A,Matrix *matrix_B)
 	}
 	else
 	{
-		printf("²»¿ÉÏà³Ë\n");
+		printf("ä¸å¯ç›¸ä¹˜\n");
 		return NULL;
 	}
 }
@@ -220,20 +220,20 @@ Matrix* dotProductMatrix(Matrix *matrix_A, Matrix *matrix_B) {
 	int j = 0;
 	Matrix *matrix_C = NULL;
 
-    // ¼ì²é¾ØÕóAºÍ¾ØÕóBµÄĞÎ×´ÊÇ·ñÒ»ÖÂ
+    // æ£€æŸ¥çŸ©é˜µAå’ŒçŸ©é˜µBçš„å½¢çŠ¶æ˜¯å¦ä¸€è‡´
     if (matrix_A->rows != matrix_B->rows || matrix_A->columns != matrix_B->columns) {
-        printf("¾ØÕóAºÍ¾ØÕóBµÄĞÎ×´²»Ò»ÖÂ£¬ÎŞ·¨½øĞĞµã»ıÔËËã\n");
+        printf("çŸ©é˜µAå’ŒçŸ©é˜µBçš„å½¢çŠ¶ä¸ä¸€è‡´ï¼Œæ— æ³•è¿›è¡Œç‚¹ç§¯è¿ç®—\n");
         return NULL;
     }
 
-    // ³õÊ¼»¯½á¹û¾ØÕóC£¬ĞĞÊıºÍÁĞÊıÓëA¡¢BÏàÍ¬
+    // åˆå§‹åŒ–ç»“æœçŸ©é˜µCï¼Œè¡Œæ•°å’Œåˆ—æ•°ä¸Aã€Bç›¸åŒ
     matrix_C = initMatrix(matrix_A->rows, matrix_A->columns);
     if (matrix_C == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
     }
 
-    // Ö´ĞĞÔªËØ¼¶±ğµÄ³Ë·¨£¨Hadamard»ı£©
+    // æ‰§è¡Œå…ƒç´ çº§åˆ«çš„ä¹˜æ³•ï¼ˆHadamardç§¯ï¼‰
     for (i = 0; i < matrix_A->rows; i++) {
         for (j = 0; j < matrix_A->columns; j++) {
             matrix_C->data[i * matrix_C->columns + j] = 
@@ -245,14 +245,14 @@ Matrix* dotProductMatrix(Matrix *matrix_A, Matrix *matrix_B) {
 }
 
 
-//ÌáÈ¡×Ó¾ØÕó
+//æå–å­çŸ©é˜µ
 Matrix* getsubMatrix(Matrix *matrix, int row, int col) {
 	int i = 0;
 	int j = 0;
 	int minorRow = 0, minorCol = 0;
 	Matrix *minor = NULL;
 
-    // ²ÎÊı¼ì²é
+    // å‚æ•°æ£€æŸ¥
     if (!matrix || matrix->rows <= 1 || matrix->columns <= 1) {
         fprintf(stderr, "Error: Invalid matrix or matrix dimensions are too small.\n");
         return NULL;
@@ -262,7 +262,7 @@ Matrix* getsubMatrix(Matrix *matrix, int row, int col) {
         return NULL;
     }
 
-    // ´´½¨ĞÂµÄ×Ó¾ØÕó
+    // åˆ›å»ºæ–°çš„å­çŸ©é˜µ
     minor = initMatrix(matrix->rows - 1, matrix->columns - 1);
     if (!minor) {
         fprintf(stderr, "Error: Memory allocation failed for minor matrix.\n");
@@ -272,11 +272,11 @@ Matrix* getsubMatrix(Matrix *matrix, int row, int col) {
     for (i = 0; i < matrix->rows; i++) {
         for (j = 0; j < matrix->columns; j++) {
             if (i != row && j != col) {
-                // ¸´ÖÆ·ÇÖ¸¶¨ĞĞºÍÁĞµÄÔªËØ
+                // å¤åˆ¶éæŒ‡å®šè¡Œå’Œåˆ—çš„å…ƒç´ 
                 minor->data[minorRow * minor->columns + minorCol] = matrix->data[i * matrix->columns + j];
                 minorCol++;
 
-                // Èç¹ûÒ»ĞĞÌîÂú£¬ÖØÖÃÁĞË÷Òı²¢½øÈëÏÂÒ»ĞĞ
+                // å¦‚æœä¸€è¡Œå¡«æ»¡ï¼Œé‡ç½®åˆ—ç´¢å¼•å¹¶è¿›å…¥ä¸‹ä¸€è¡Œ
                 if (minorCol == minor->columns) {
                     minorCol = 0;
                     minorRow++;
@@ -288,14 +288,14 @@ Matrix* getsubMatrix(Matrix *matrix, int row, int col) {
     return minor;
 }
 
-// ¼ÆËã¾ØÕóĞĞÁĞÊ½
+// è®¡ç®—çŸ©é˜µè¡Œåˆ—å¼
 double detMatrix(Matrix *matrix) {
 	double det = 0.0;
 	int col = 0;
 	double minorDet = 0.0;
 	double cofactor = 0.0;
 
-    // ²ÎÊı¼ì²é
+    // å‚æ•°æ£€æŸ¥
     if (!matrix) {
         fprintf(stderr, "Error: Null matrix passed to Determinant.\n");
         return 0.0;
@@ -306,37 +306,37 @@ double detMatrix(Matrix *matrix) {
     }
     if (matrix->rows == 0) {
 		fprintf(stderr, "Error: The matrix has no element.\n");
-        return 0.0; // ¿Õ¾ØÕó
+        return 0.0; // ç©ºçŸ©é˜µ
     }
 
-    // »ù±¾Çé¿ö£º1x1 ¾ØÕó
+    // åŸºæœ¬æƒ…å†µï¼š1x1 çŸ©é˜µ
     if (matrix->rows == 1) {
         return matrix->data[0];
     }
 
-    // »ù±¾Çé¿ö£º2x2 ¾ØÕó
+    // åŸºæœ¬æƒ…å†µï¼š2x2 çŸ©é˜µ
     if (matrix->rows == 2) {
         return matrix->data[0] * matrix->data[3] - matrix->data[1] * matrix->data[2];
     }
 
-    // Í¨ÓÃÇé¿ö£ºµİ¹é¼ÆËã
+    // é€šç”¨æƒ…å†µï¼šé€’å½’è®¡ç®—
     
     for (col = 0; col < matrix->columns; col++) {
-        // »ñÈ¡×Ó¾ØÕó
+        // è·å–å­çŸ©é˜µ
         Matrix *minor = getsubMatrix(matrix, 0, col);
         if (!minor) {
             fprintf(stderr, "Error: Failed to compute minor matrix.\n");
             return 0.0;
         }
 
-        // µİ¹é¼ÆËã×Ó¾ØÕóµÄĞĞÁĞÊ½
+        // é€’å½’è®¡ç®—å­çŸ©é˜µçš„è¡Œåˆ—å¼
         minorDet = detMatrix(minor);
         freeMatrix(minor);
 
-        // Ê¹ÓÃÀ­ÆÕÀ­Ë¹Õ¹¿ª¹«Ê½
-        cofactor = matrix->data[col]; // Ö÷ÔªËØ
+        // ä½¿ç”¨æ‹‰æ™®æ‹‰æ–¯å±•å¼€å…¬å¼
+        cofactor = matrix->data[col]; // ä¸»å…ƒç´ 
         if (col % 2 != 0) {
-            cofactor = -cofactor; // ½»Ìæ·ûºÅ
+            cofactor = -cofactor; // äº¤æ›¿ç¬¦å·
         }
         det += cofactor * minorDet;
     }
@@ -344,15 +344,15 @@ double detMatrix(Matrix *matrix) {
     return det;
 }
 
-//¾ØÕó×ªÖÃ
-void transMatrix(Matrix *matrix)			//·½Õó
+//çŸ©é˜µè½¬ç½®
+void transMatrix(Matrix *matrix)			//æ–¹é˜µ
 {
 	int i =0;
 	int j =0;
 
 	if (matrix->rows == matrix->columns)
 	{
-		Matrix *matrixTemp = initMatrix(matrix->rows,matrix->columns);       	//´´½¨Ò»¸öÁÙÊ±¾ØÕó
+		Matrix *matrixTemp = initMatrix(matrix->rows,matrix->columns);       	//åˆ›å»ºä¸€ä¸ªä¸´æ—¶çŸ©é˜µ
 		if (matrixTemp == NULL) {
             fprintf(stderr, "Memory allocation failed!\n");
             return;
@@ -366,17 +366,17 @@ void transMatrix(Matrix *matrix)			//·½Õó
                 matrix->data[i * matrix->columns + j] = matrixTemp->data[j * matrix->columns + i];
             }
         }
-		// ÊÍ·ÅÁÙÊ±¾ØÕóµÄÄÚ´æ
+		// é‡Šæ”¾ä¸´æ—¶çŸ©é˜µçš„å†…å­˜
         freeMatrix(matrixTemp);
 	}
 	else
 	{
-		printf("×ªÖÃµÄ¾ØÕó±ØĞëÎª·½Õó\n");
+		printf("è½¬ç½®çš„çŸ©é˜µå¿…é¡»ä¸ºæ–¹é˜µ\n");
 	}
 }
 
-//¾ØÕó×ªÖÃ ·Ç·½Õó
-Matrix* transMatrix2(Matrix *matrix) // ·Ç·½ÕóµÄ×ªÖÃ
+//çŸ©é˜µè½¬ç½® éæ–¹é˜µ
+Matrix* transMatrix2(Matrix *matrix) // éæ–¹é˜µçš„è½¬ç½®
 {
 	int i =0;
 	int j =0;
@@ -389,7 +389,7 @@ Matrix* transMatrix2(Matrix *matrix) // ·Ç·½ÕóµÄ×ªÖÃ
 
     if (matrix->rows != matrix->columns)
     {
-        // ´´½¨Ò»¸öĞÂµÄMatrix½á¹¹ÌåÀ´´æ´¢×ªÖÃºóµÄ¾ØÕó
+        // åˆ›å»ºä¸€ä¸ªæ–°çš„Matrixç»“æ„ä½“æ¥å­˜å‚¨è½¬ç½®åçš„çŸ©é˜µ
         matrix_T = initMatrix(matrix->columns, matrix->rows);
         if (matrix_T == NULL) {
             fprintf(stderr, "Memory allocation failed!\n");
@@ -407,26 +407,26 @@ Matrix* transMatrix2(Matrix *matrix) // ·Ç·½ÕóµÄ×ªÖÃ
     }
     else
     {
-        printf("ÊäÈëµÄ¾ØÕóÊÇ·½Õó£¬²»ĞèÒª×ªÖÃ\n");
+        printf("è¾“å…¥çš„çŸ©é˜µæ˜¯æ–¹é˜µï¼Œä¸éœ€è¦è½¬ç½®\n");
         return NULL;
     }
 }
 
-// 2-3½×¾ØÕóÊÇ·ñ¿ÉÄæ
+// 2-3é˜¶çŸ©é˜µæ˜¯å¦å¯é€†
 bool isInvertible(Matrix *matrix) {
 	double det = 0.0;
 
     if (matrix->rows != matrix->columns) {
-        return 0; // ·Ç·½Õó²»¿ÉÄæ
+        return 0; // éæ–¹é˜µä¸å¯é€†
     }
 
-    // 2x2¾ØÕóµÄĞĞÁĞÊ½
+    // 2x2çŸ©é˜µçš„è¡Œåˆ—å¼
     if (matrix->rows == 2) {
         det = matrix->data[0] * matrix->data[3] - matrix->data[1] * matrix->data[2];
-        return fabs(det) > 1e-9;  // ¼ì²éĞĞÁĞÊ½ÊÇ·ñ½Ó½üÓÚ0
+        return fabs(det) > 1e-9;  // æ£€æŸ¥è¡Œåˆ—å¼æ˜¯å¦æ¥è¿‘äº0
     }
 
-    // 3x3¾ØÕóµÄĞĞÁĞÊ½
+    // 3x3çŸ©é˜µçš„è¡Œåˆ—å¼
     if (matrix->rows == 3) {
         det = matrix->data[0] * (matrix->data[4] * matrix->data[8] - matrix->data[5] * matrix->data[7]) -
                      matrix->data[1] * (matrix->data[3] * matrix->data[8] - matrix->data[5] * matrix->data[6]) +
@@ -434,29 +434,29 @@ bool isInvertible(Matrix *matrix) {
         return fabs(det) > 1e-9;
     }
 
-    // ¶ÔÓÚ¸ü´óµÄ¾ØÕó£¬ÎÒÃÇĞèÒª¸ü¸´ÔÓµÄËã·¨
-    return false; // Ä¿Ç°Ö»Ö§³Ö2x2ºÍ3x3¾ØÕó
+    // å¯¹äºæ›´å¤§çš„çŸ©é˜µï¼Œæˆ‘ä»¬éœ€è¦æ›´å¤æ‚çš„ç®—æ³•
+    return false; // ç›®å‰åªæ”¯æŒ2x2å’Œ3x3çŸ©é˜µ
 }
 
-// ÅĞ¶Ïn½×¾ØÕóÊÇ·ñ¿ÉÄæµÄº¯Êı
+// åˆ¤æ–­né˜¶çŸ©é˜µæ˜¯å¦å¯é€†çš„å‡½æ•°
 bool isInvertiblenx_n(Matrix *matrix) {
 	double det = 0.0;
 
     if (matrix == NULL || matrix->rows != matrix->columns) {
-        // ·Ç·½Õó»ò¿Õ¾ØÕóÖ±½Ó·µ»Ø²»¿ÉÄæ
+        // éæ–¹é˜µæˆ–ç©ºçŸ©é˜µç›´æ¥è¿”å›ä¸å¯é€†
 		fprintf(stderr, "Memory allocation failed or matrix is non-square\n");
         return false;
     }
 
     det = detMatrix(matrix);
-    // Èç¹ûĞĞÁĞÊ½Îª0£¬¾ØÕó²»¿ÉÄæ£»·ñÔò£¬¾ØÕó¿ÉÄæ
+    // å¦‚æœè¡Œåˆ—å¼ä¸º0ï¼ŒçŸ©é˜µä¸å¯é€†ï¼›å¦åˆ™ï¼ŒçŸ©é˜µå¯é€†
     return !FLOAT_EQUAL(det, 0.0);
 }
 
-// ¾ØÕóµÄÄæ 2-3½×
+// çŸ©é˜µçš„é€† 2-3é˜¶
 Matrix* invMatrix(Matrix *matrix) {
 	Matrix *inverse = NULL;
-	double det = 0.1; //±£Ö¤³ı·¨°²È«
+	double det = 0.1; //ä¿è¯é™¤æ³•å®‰å…¨
 	double inv_det = 0.0;
 
     if (!isInvertible(matrix)) {
@@ -469,11 +469,11 @@ Matrix* invMatrix(Matrix *matrix) {
         return NULL;
     }
 
-    // 2x2¾ØÕóµÄÄæ
+    // 2x2çŸ©é˜µçš„é€†
     if (matrix->rows == 2) {
         det = matrix->data[0] * matrix->data[3] - matrix->data[1] * matrix->data[2];
         if (det == 0) {
-            return NULL;  // ·ÀÖ¹³ıÒÔÁã
+            return NULL;  // é˜²æ­¢é™¤ä»¥é›¶
         }
         inverse->data[0] = matrix->data[3] / det;
         inverse->data[1] = -matrix->data[1] / det;
@@ -481,13 +481,13 @@ Matrix* invMatrix(Matrix *matrix) {
         inverse->data[3] = matrix->data[0] / det;
     }
 
-    // 3x3¾ØÕóµÄÄæ
+    // 3x3çŸ©é˜µçš„é€†
     if (matrix->rows == 3) {
         det = matrix->data[0] * (matrix->data[4] * matrix->data[8] - matrix->data[5] * matrix->data[7]) -
                      matrix->data[1] * (matrix->data[3] * matrix->data[8] - matrix->data[5] * matrix->data[6]) +
                      matrix->data[2] * (matrix->data[3] * matrix->data[7] - matrix->data[4] * matrix->data[6]);
         if (det == 0) {
-            return NULL;  // ·ÀÖ¹³ıÒÔÁã
+            return NULL;  // é˜²æ­¢é™¤ä»¥é›¶
         }
         inv_det = 1 / det;
 
@@ -505,10 +505,10 @@ Matrix* invMatrix(Matrix *matrix) {
     return inverse;
 }
 
-// °²È«µÄ¸ßË¹ÏûÔª·¨Çó¾ØÕóÄæ n½×¾ØÕó
+// å®‰å…¨çš„é«˜æ–¯æ¶ˆå…ƒæ³•æ±‚çŸ©é˜µé€† né˜¶çŸ©é˜µ
 Matrix* safeMatrixInv(Matrix *matrix, int n) {
 	int i, j, k, principal;
-	double* aug = NULL; // Ôö¹ã¾ØÕó
+	double* aug = NULL; // å¢å¹¿çŸ©é˜µ
 	double max = 0.0;
 	double tmp = 0.0;
 	double factor = 0.0;
@@ -520,23 +520,23 @@ Matrix* safeMatrixInv(Matrix *matrix, int n) {
         return NULL;
     }
 
-	aug = (double*)malloc(sizeof(double) * n * n * 2); // Ôö¹ã¾ØÕó
+	aug = (double*)malloc(sizeof(double) * n * n * 2); // å¢å¹¿çŸ©é˜µ
     if (aug == NULL) {
         fprintf(stderr, "Memory allocation failed for augmented matrix.\n");
         return NULL;
     }
 
-    // ³õÊ¼»¯Ôö¹ã¾ØÕó
+    // åˆå§‹åŒ–å¢å¹¿çŸ©é˜µ
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
-            aug[i * 2 * n + j] = matrix->data[i * n + j]; // Ô­¾ØÕó²¿·Ö
-            aug[i * 2 * n + (j + n)] = (i == j) ? 1.0 : 0.0; // µ¥Î»¾ØÕó²¿·Ö
+            aug[i * 2 * n + j] = matrix->data[i * n + j]; // åŸçŸ©é˜µéƒ¨åˆ†
+            aug[i * 2 * n + (j + n)] = (i == j) ? 1.0 : 0.0; // å•ä½çŸ©é˜µéƒ¨åˆ†
         }
     }
 
-    // ¸ßË¹ÏûÔª
+    // é«˜æ–¯æ¶ˆå…ƒ
     for (j = 0; j < n; j++) {
-        // Ñ¡Ö÷Ôª
+        // é€‰ä¸»å…ƒ
         principal = j;
         max = fabs(aug[principal * 2 * n + j]);
         for (i = j + 1; i < n; i++) {
@@ -546,14 +546,14 @@ Matrix* safeMatrixInv(Matrix *matrix, int n) {
             }
         }
 
-        // ¼ì²éÖ÷ÔªÊÇ·ñÎª0
+        // æ£€æŸ¥ä¸»å…ƒæ˜¯å¦ä¸º0
         if (fabs(max) < 1e-9) {
             fprintf(stderr, "Matrix is singular or nearly singular.\n");
             SAFE_FREE(aug);
             return NULL;
         }
 
-        // ½»»»ĞĞ
+        // äº¤æ¢è¡Œ
         if (j != principal) {
             for (k = 0; k < 2 * n; k++) {
                 tmp = aug[j * 2 * n + k];
@@ -562,7 +562,7 @@ Matrix* safeMatrixInv(Matrix *matrix, int n) {
             }
         }
 
-        // »¯ÎªĞĞ½×ÌİĞÎÊ½
+        // åŒ–ä¸ºè¡Œé˜¶æ¢¯å½¢å¼
         for (i = 0; i < n; i++) {
             if (i != j) {
                 factor = aug[i * 2 * n + j] / aug[j * 2 * n + j];
@@ -572,14 +572,14 @@ Matrix* safeMatrixInv(Matrix *matrix, int n) {
             }
         }
 
-        // Ö÷¶Ô½ÇÏß»¯Îª1
+        // ä¸»å¯¹è§’çº¿åŒ–ä¸º1
         diag_factor = aug[j * 2 * n + j];
         for (k = 0; k < 2 * n; k++) {
             aug[j * 2 * n + k] /= diag_factor;
         }
     }
 
-    // ÌáÈ¡Äæ¾ØÕó
+    // æå–é€†çŸ©é˜µ
 	inverse = initMatrix(n, n);
     if (inverse == NULL) {
         fprintf(stderr, "Memory allocation failed for inverse matrix.\n");
@@ -593,169 +593,169 @@ Matrix* safeMatrixInv(Matrix *matrix, int n) {
         }
     }
 
-    SAFE_FREE(aug); // ÊÍ·ÅÔö¹ã¾ØÕó
+    SAFE_FREE(aug); // é‡Šæ”¾å¢å¹¿çŸ©é˜µ
     return inverse;
 }
 
 
-//¾ØÕó³ı·¨ ÓÒ³ı  2-3½×
+//çŸ©é˜µé™¤æ³• å³é™¤  2-3é˜¶
 Matrix* rightDivMatrix(Matrix *matrix_A, Matrix *matrix_B) {
 	Matrix *inverse_B = NULL;
 	Matrix *result = NULL;
 
-    // ¼ì²é B ÊÇ·ñÊÇ·½Õó
+    // æ£€æŸ¥ B æ˜¯å¦æ˜¯æ–¹é˜µ
     if (matrix_B->rows != matrix_B->columns) {
-        printf("¾ØÕó B ±ØĞëÊÇ·½Õó\n");
+        printf("çŸ©é˜µ B å¿…é¡»æ˜¯æ–¹é˜µ\n");
         return NULL;
     }
 
-    // ¼ì²é A ÊÇ·ñ¿ÉÄæ
+    // æ£€æŸ¥ A æ˜¯å¦å¯é€†
     if (!isInvertible(matrix_A)) {
-        printf("¾ØÕó A ²»¿ÉÄæ\n");
+        printf("çŸ©é˜µ A ä¸å¯é€†\n");
         return NULL;
     }
 
-    // ¼ÆËã B µÄÄæ¾ØÕó
+    // è®¡ç®— B çš„é€†çŸ©é˜µ
     inverse_B = invMatrix(matrix_B);
     if (inverse_B == NULL) {
-        printf("¼ÆËã¾ØÕó B µÄÄæ¾ØÕóÊ§°Ü\n");
+        printf("è®¡ç®—çŸ©é˜µ B çš„é€†çŸ©é˜µå¤±è´¥\n");
         return NULL;
     }
 
-    // ¼ÆËã A * B^-1 À´µÃµ½½á¹û X
+    // è®¡ç®— A * B^-1 æ¥å¾—åˆ°ç»“æœ X
     result = mulMatrix(matrix_A, inverse_B);
     if (result == NULL) {
-        printf("¾ØÕó³Ë·¨Ê§°Ü\n");
+        printf("çŸ©é˜µä¹˜æ³•å¤±è´¥\n");
         freeMatrix(inverse_B);
         return NULL;
     }
 
-    // ÊÍ·ÅÖĞ¼ä½á¹ûµÄÄÚ´æ
+    // é‡Šæ”¾ä¸­é—´ç»“æœçš„å†…å­˜
     freeMatrix(inverse_B);
 
     return result;
 }
 
 
-//¾ØÕó³ı·¨ ×ó³ı  2-3½×
+//çŸ©é˜µé™¤æ³• å·¦é™¤  2-3é˜¶
 Matrix* leftDivMatrix(Matrix *matrix_A, Matrix *matrix_B) {
 	Matrix *inverse_A = NULL;
 	Matrix *result = NULL;
 
-    // ¼ì²é A ÊÇ·ñÊÇ·½Õó
+    // æ£€æŸ¥ A æ˜¯å¦æ˜¯æ–¹é˜µ
     if (matrix_A->rows != matrix_A->columns) {
-        printf("¾ØÕó A ±ØĞëÊÇ·½Õó\n");
+        printf("çŸ©é˜µ A å¿…é¡»æ˜¯æ–¹é˜µ\n");
         return NULL;
     }
 
-    // ¼ì²é A ÊÇ·ñ¿ÉÄæ
+    // æ£€æŸ¥ A æ˜¯å¦å¯é€†
     if (!isInvertible(matrix_A)) {
-        printf("¾ØÕó A ²»¿ÉÄæ\n");
+        printf("çŸ©é˜µ A ä¸å¯é€†\n");
         return NULL;
     }
 
-    // ¼ÆËã A µÄÄæ¾ØÕó
+    // è®¡ç®— A çš„é€†çŸ©é˜µ
     inverse_A = invMatrix(matrix_A);
     if (inverse_A == NULL) {
-        printf("¼ÆËã¾ØÕó A µÄÄæ¾ØÕóÊ§°Ü\n");
+        printf("è®¡ç®—çŸ©é˜µ A çš„é€†çŸ©é˜µå¤±è´¥\n");
         return NULL;
     }
 
-    // ¼ÆËã A^-1 * B À´µÃµ½½á¹û X
+    // è®¡ç®— A^-1 * B æ¥å¾—åˆ°ç»“æœ X
     result = mulMatrix(inverse_A, matrix_B);
     if (result == NULL) {
-        printf("¾ØÕó³Ë·¨Ê§°Ü\n");
+        printf("çŸ©é˜µä¹˜æ³•å¤±è´¥\n");
         freeMatrix(inverse_A);
         return NULL;
     }
 
-    // ÊÍ·ÅÖĞ¼ä½á¹ûµÄÄÚ´æ
+    // é‡Šæ”¾ä¸­é—´ç»“æœçš„å†…å­˜
     freeMatrix(inverse_A);
 
     return result;
 }
 
-// n½×¾ØÕó×ó³ı ÎŞ·½ÕóÏŞÖÆ
+// né˜¶çŸ©é˜µå·¦é™¤ æ— æ–¹é˜µé™åˆ¶
 Matrix* leftDivMatrix_n(Matrix *matrix_A,Matrix *matrix_B){
 	Matrix *inverse_A = NULL;
 	Matrix *result = NULL;
 
-	// ¼ì²é A ÊÇ·ñÊÇ·½Õó
+	// æ£€æŸ¥ A æ˜¯å¦æ˜¯æ–¹é˜µ
     if (matrix_A->rows != matrix_A->columns) {
-        printf("¾ØÕó A ±ØĞëÊÇ·½Õó\n");
+        printf("çŸ©é˜µ A å¿…é¡»æ˜¯æ–¹é˜µ\n");
         return NULL;
     }
 
-    // ¼ì²é A ÊÇ·ñ¿ÉÄæ
+    // æ£€æŸ¥ A æ˜¯å¦å¯é€†
     if (!isInvertiblenx_n(matrix_A)) {
-        printf("¾ØÕó A ²»¿ÉÄæ\n");
+        printf("çŸ©é˜µ A ä¸å¯é€†\n");
         return NULL;
     }
 
-    // ¼ÆËã A µÄÄæ¾ØÕó
+    // è®¡ç®— A çš„é€†çŸ©é˜µ
 	inverse_A = safeMatrixInv(matrix_A, matrix_A->rows);
     if (inverse_A == NULL) {
-        printf("¼ÆËã¾ØÕó A µÄÄæ¾ØÕóÊ§°Ü\n");
+        printf("è®¡ç®—çŸ©é˜µ A çš„é€†çŸ©é˜µå¤±è´¥\n");
         return NULL;
     }
 
-    // ¼ÆËã A^-1 * B À´µÃµ½½á¹û X
+    // è®¡ç®— A^-1 * B æ¥å¾—åˆ°ç»“æœ X
     result = mulMatrix(inverse_A, matrix_B);
     if (result == NULL) {
-        printf("¾ØÕó³Ë·¨Ê§°Ü\n");
+        printf("çŸ©é˜µä¹˜æ³•å¤±è´¥\n");
         freeMatrix(inverse_A);
         return NULL;
     }
 
-    // ÊÍ·ÅÖĞ¼ä½á¹ûµÄÄÚ´æ
+    // é‡Šæ”¾ä¸­é—´ç»“æœçš„å†…å­˜
     freeMatrix(inverse_A);
 
     return result;
 }
 
-// n½×¾ØÕóÓÒ³ı ÎŞ·½ÕóÏŞÖÆ
+// né˜¶çŸ©é˜µå³é™¤ æ— æ–¹é˜µé™åˆ¶
 Matrix* rightDivMatrix_n(Matrix *matrix_A,Matrix *matrix_B){
 	Matrix *inverse_B = NULL;
 	Matrix *result = NULL;
 
-	// ¼ì²é B ÊÇ·ñÊÇ·½Õó
+	// æ£€æŸ¥ B æ˜¯å¦æ˜¯æ–¹é˜µ
     if (matrix_B->rows != matrix_B->columns) {
-        printf("¾ØÕó B ±ØĞëÊÇ·½Õó\n");
+        printf("çŸ©é˜µ B å¿…é¡»æ˜¯æ–¹é˜µ\n");
         return NULL;
     }
 
-    // ¼ì²é B ÊÇ·ñ¿ÉÄæ
+    // æ£€æŸ¥ B æ˜¯å¦å¯é€†
     if (!isInvertiblenx_n(matrix_B)) {
-        printf("¾ØÕó B ²»¿ÉÄæ\n");
+        printf("çŸ©é˜µ B ä¸å¯é€†\n");
         return NULL;
     }
 
-    // ¼ÆËã B µÄÄæ¾ØÕó
+    // è®¡ç®— B çš„é€†çŸ©é˜µ
 	inverse_B = safeMatrixInv(matrix_B, matrix_B->rows);
     if (inverse_B == NULL) {
-        printf("¼ÆËã¾ØÕó B µÄÄæ¾ØÕóÊ§°Ü\n");
+        printf("è®¡ç®—çŸ©é˜µ B çš„é€†çŸ©é˜µå¤±è´¥\n");
         return NULL;
     }
 
-    // ¼ÆËã A * B^-1 À´µÃµ½½á¹û X
+    // è®¡ç®— A * B^-1 æ¥å¾—åˆ°ç»“æœ X
     result = mulMatrix(matrix_A, inverse_B);
     if (result == NULL) {
-        printf("¾ØÕó³Ë·¨Ê§°Ü\n");
+        printf("çŸ©é˜µä¹˜æ³•å¤±è´¥\n");
         freeMatrix(inverse_B);
         return NULL;
     }
 
-    // ÊÍ·ÅÖĞ¼ä½á¹ûµÄÄÚ´æ
+    // é‡Šæ”¾ä¸­é—´ç»“æœçš„å†…å­˜
     freeMatrix(inverse_B);
 
     return result;
 }
 
-// ÏòÁ¿²æ»ı
+// å‘é‡å‰ç§¯
 Matrix* crossProduct(Matrix *vector_A, Matrix *vector_B) {
 	Matrix *result = NULL;
 
-    // ¼ÙÉèvector_AºÍvector_BÊÇ3x1µÄ¾ØÕó
+    // å‡è®¾vector_Aå’Œvector_Bæ˜¯3x1çš„çŸ©é˜µ
     if (vector_A->rows != 3 || vector_A->columns != 1 || vector_B->rows != 3 || vector_B->columns != 1) {
         printf("Only 3D vectors are supported for cross product.\n");
         return NULL;
@@ -767,7 +767,7 @@ Matrix* crossProduct(Matrix *vector_A, Matrix *vector_B) {
         return NULL;
     }
 
-    // ¼ÆËã²æ³ËµÄÃ¿¸ö·ÖÁ¿
+    // è®¡ç®—å‰ä¹˜çš„æ¯ä¸ªåˆ†é‡
     result->data[0] = vector_A->data[1] * vector_B->data[2] - vector_A->data[2] * vector_B->data[1]; // x
     result->data[1] = vector_A->data[2] * vector_B->data[0] - vector_A->data[0] * vector_B->data[2]; // y
     result->data[2] = vector_A->data[0] * vector_B->data[1] - vector_A->data[1] * vector_B->data[0]; // z
@@ -775,18 +775,18 @@ Matrix* crossProduct(Matrix *vector_A, Matrix *vector_B) {
     return result;
 }
 
-// ¾ØÕó²æ³Ë AºÍB±ØĞëÖÁÉÙ¾ßÓĞÒ»¸ö³¤¶ÈÎª 3 µÄÎ¬¶È¡£
+// çŸ©é˜µå‰ä¹˜ Aå’ŒBå¿…é¡»è‡³å°‘å…·æœ‰ä¸€ä¸ªé•¿åº¦ä¸º 3 çš„ç»´åº¦ã€‚
 Matrix* crossMatrix(Matrix *matrix_A, Matrix *matrix_B) {
 	Matrix *result = NULL;
 	int i = 0;
 	Matrix vec_A;
 	Matrix vec_B;
 	Matrix *cross = NULL;
-    // ¼ì²é¾ØÕóÊÇ·ñÂú×ã²æ³ËÒªÇó£º3xN »ò Nx3
+    // æ£€æŸ¥çŸ©é˜µæ˜¯å¦æ»¡è¶³å‰ä¹˜è¦æ±‚ï¼š3xN æˆ– Nx3
     if (matrix_A->columns == 3 && matrix_B->columns == 3) {
-        // 3x3¾ØÕó²æ³Ë
+        // 3x3çŸ©é˜µå‰ä¹˜
         if (matrix_A->rows != matrix_B->rows) {
-            printf("¾ØÕóµÄĞĞÊı²»Æ¥Åä£¬ÎŞ·¨½øĞĞ²æ³Ë\n");
+            printf("çŸ©é˜µçš„è¡Œæ•°ä¸åŒ¹é…ï¼Œæ— æ³•è¿›è¡Œå‰ä¹˜\n");
             return NULL;
         }
         result = initMatrix(matrix_A->rows, 3);
@@ -795,7 +795,7 @@ Matrix* crossMatrix(Matrix *matrix_A, Matrix *matrix_B) {
             return NULL;
         }
 
-        // ¶ÔÃ¿Ò»ĞĞ½øĞĞÏòÁ¿²æ³Ë
+        // å¯¹æ¯ä¸€è¡Œè¿›è¡Œå‘é‡å‰ä¹˜
         for (i = 0; i < matrix_A->rows; i++) {
            //Matrix vec_A = {3, 1, &matrix_A->data[i * 3]};
            //Matrix vec_B = {3, 1, &matrix_B->data[i * 3]};
@@ -816,29 +816,29 @@ Matrix* crossMatrix(Matrix *matrix_A, Matrix *matrix_B) {
         }
         return result;
     } else if (matrix_A->columns == 1 && matrix_B->columns == 1) {
-        // ÏòÁ¿²æ³Ë (3x1 ¾ØÕó)
+        // å‘é‡å‰ä¹˜ (3x1 çŸ©é˜µ)
         if (matrix_A->rows != 3 || matrix_B->rows != 3) {
-            printf("Ö»ÄÜ¶Ô3DÁĞÏòÁ¿½øĞĞ²æ³Ë¡£\n");
+            printf("åªèƒ½å¯¹3Dåˆ—å‘é‡è¿›è¡Œå‰ä¹˜ã€‚\n");
             return NULL;
         }
         return crossProduct(matrix_A, matrix_B);
     } else {
-        printf("²»Ö§³ÖµÄ¾ØÕóĞÎ×´¡£\n");
+        printf("ä¸æ”¯æŒçš„çŸ©é˜µå½¢çŠ¶ã€‚\n");
         return NULL;
     }
 }
 
-// ¼ÆËãÏòÁ¿µÄÒ»·¶Êı
+// è®¡ç®—å‘é‡çš„ä¸€èŒƒæ•°
 Matrix* normVector1(Matrix *vector) {
 	Matrix *norm = NULL;
 	int i = 0;
 	double sum = 0.0;
 
     if (vector->columns != 1) {
-        return NULL; // ½öÖ§³ÖĞĞÏòÁ¿£¨Ò»ÁĞ£©
+        return NULL; // ä»…æ”¯æŒè¡Œå‘é‡ï¼ˆä¸€åˆ—ï¼‰
     }
 
-    norm = initMatrix(1, 1); // Ò»·¶Êı½á¹ûÎª±êÁ¿
+    norm = initMatrix(1, 1); // ä¸€èŒƒæ•°ç»“æœä¸ºæ ‡é‡
     if (!norm) {
         return NULL;
     }
@@ -851,17 +851,17 @@ Matrix* normVector1(Matrix *vector) {
     return norm;
 }
 
-// ¼ÆËãÏòÁ¿µÄ¶ş·¶Êı
+// è®¡ç®—å‘é‡çš„äºŒèŒƒæ•°
 Matrix* normVector2(Matrix *vector) {
 	Matrix *norm = NULL;
 	int i = 0;
 	double sum = 0.0;
 	
     if (vector->columns != 1) {
-        return NULL; // ½öÖ§³ÖĞĞÏòÁ¿£¨Ò»ÁĞ£©
+        return NULL; // ä»…æ”¯æŒè¡Œå‘é‡ï¼ˆä¸€åˆ—ï¼‰
     }
 
-    norm = initMatrix(1, 1); // ¶ş·¶Êı½á¹ûÎª±êÁ¿
+    norm = initMatrix(1, 1); // äºŒèŒƒæ•°ç»“æœä¸ºæ ‡é‡
     if (!norm) {
         return NULL;
     }
@@ -875,7 +875,7 @@ Matrix* normVector2(Matrix *vector) {
 }
 
 
-//ÈÆxÖáĞı×ª¾ØÕó
+//ç»•xè½´æ—‹è½¬çŸ©é˜µ
 Matrix* rotationMatrix_x (double element){
     Matrix* result = initMatrix(3, 3); 
 
@@ -884,7 +884,7 @@ Matrix* rotationMatrix_x (double element){
         return NULL;
     }
 
-    // ½« elements ÖĞµÄÔªËØÉèÖÃµ½½á¹û¾ØÕóµÄ¶Ô½ÇÏß
+    // å°† elements ä¸­çš„å…ƒç´ è®¾ç½®åˆ°ç»“æœçŸ©é˜µçš„å¯¹è§’çº¿
 	result->data[0] = 1;
 	result->data[1] = 0;
 	result->data[2] = 0;
@@ -899,7 +899,7 @@ Matrix* rotationMatrix_x (double element){
     return result;
 }
 
-//ÈÆyÖáĞı×ª¾ØÕó
+//ç»•yè½´æ—‹è½¬çŸ©é˜µ
 Matrix* rotationMatrix_y (double element){
 	Matrix* result = initMatrix(3, 3); 
 
@@ -908,7 +908,7 @@ Matrix* rotationMatrix_y (double element){
         return NULL;
     }
 
-    // ½« elements ÖĞµÄÔªËØÉèÖÃµ½½á¹û¾ØÕóµÄ¶Ô½ÇÏß
+    // å°† elements ä¸­çš„å…ƒç´ è®¾ç½®åˆ°ç»“æœçŸ©é˜µçš„å¯¹è§’çº¿
 	result->data[0] = cos(element);
 	result->data[1] = 0;
 	result->data[2] = -sin(element);
@@ -923,7 +923,7 @@ Matrix* rotationMatrix_y (double element){
     return result;
 }
 
-//ÈÆzÖáĞı×ª¾ØÕó
+//ç»•zè½´æ—‹è½¬çŸ©é˜µ
 Matrix* rotationMatrix_z (double element){
 	Matrix* result = initMatrix(3, 3); 
 
@@ -932,7 +932,7 @@ Matrix* rotationMatrix_z (double element){
         return NULL;
     }
 
-    // ½« elements ÖĞµÄÔªËØÉèÖÃµ½½á¹û¾ØÕóµÄ¶Ô½ÇÏß
+    // å°† elements ä¸­çš„å…ƒç´ è®¾ç½®åˆ°ç»“æœçŸ©é˜µçš„å¯¹è§’çº¿
 	result->data[0] = cos(element);
 	result->data[1] = sin(element);
 	result->data[2] = 0;
